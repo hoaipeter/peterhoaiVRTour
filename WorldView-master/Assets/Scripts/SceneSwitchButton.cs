@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using VRStandardAssets.Utils;
+using UnityEngine.UI;
 
 namespace VRStandardAssets.Examples
 {
@@ -12,6 +13,7 @@ namespace VRStandardAssets.Examples
 		[SerializeField] private Renderer m_Renderer;
 		[SerializeField] private Material normalMat;
 		[SerializeField] private Material outlinedMat;
+        public Text change;
 
 		private void Awake ()
 		{
@@ -41,28 +43,41 @@ namespace VRStandardAssets.Examples
 		private void HandleOver()
 		{
 			m_Renderer.material = outlinedMat;
-		}
+            change.text = m_InteractiveItem.name.ToString();
+        }
 
 
 		//Handle the Out event
 		private void HandleOut()
 		{
 			m_Renderer.material = normalMat;
-		}
+            if (SceneManager.GetSceneByName("Main").IsValid())
+            {
+                change.text = "Rheingauer Dom (Geisenheim, Germany)";
+            }
+            else
+            {
+                change.text = SceneManager.GetActiveScene().name.ToString();  //gameObject.name.ToString();
+            }
+        }
 
 
 		//Handle the Click event
 		private void HandleClick()
 		{
-			SceneManager.LoadScene (gameObject.name);
+            SceneManager.LoadScene(gameObject.name);
 		}
 
 
 		//Handle the DoubleClick event
 		private void HandleDoubleClick()
 		{
-			
-		}
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                //UnityEngine.XR.XRSettings.enabled = false;
+                Application.Quit();
+            }
+        }
 	}
 
 }
